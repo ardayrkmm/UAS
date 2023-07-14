@@ -1,0 +1,110 @@
+package tokopedia;
+
+import Model.ProdukTokped;
+
+import java.util.Scanner;
+
+class produk{
+    ProdukTokped[] produk ;
+    public produk(ProdukTokped[] produks){
+        this.produk = produks;
+    }
+    public void tampil() {
+        System.out.println("\nData produk:");
+
+        for (ProdukTokped product : produk) {
+            System.out.println(product);
+        }
+    }
+
+    public void urutkan(){
+        int n = produk.length;
+        for (int j = 0 ; j < n -1; j++){
+            int minIndex = j;
+            for (int h = j +1 ; j < n; j++){
+                if (produk[h].getNama().compareTo(produk[minIndex].getNama()) < 0){
+                    minIndex = h;
+                }
+            }
+            if (minIndex != j){
+                swap(j, minIndex);
+            }
+        }
+
+
+    }
+
+    public void swap(int i, int j ){
+        ProdukTokped temp = produk[i];
+        produk[i] = produk[j];
+        produk[j] = temp;
+    }
+
+    public ProdukTokped caribarang(String inputName) {
+        for (ProdukTokped product : produk) {
+            if (product.getNama().equalsIgnoreCase(inputName)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+}
+public class tampilBarang {
+
+
+    public static void main(String[] args) {
+Scanner sn = new Scanner(System.in);
+
+
+        ProdukTokped[] products = {
+                new ProdukTokped("Laptop", "Rp. 20000", "gambar1"),
+                new ProdukTokped("Kabel", "Rp. 20000", "gambar1"),
+                new ProdukTokped("Komputer", "Rp. 20000", "gambar1"),
+                new ProdukTokped("Mouse", "Rp. 20000", "gambar1"),
+        };
+  produk produkTokped = new produk(products);
+        boolean lanjutkan = true;
+        System.out.println("Cari barang yang kamu mau : ");
+        String searchName = sn.nextLine();
+        ProdukTokped dapetProduk = produkTokped.caribarang(searchName);
+        System.out.println();
+
+        if (dapetProduk != null) {
+            System.out.println("Produk di dapatkan : " + dapetProduk.getNama() + " (Harga: " + dapetProduk.getHarga() + ")");
+
+            ProdukTokped[] searchResults = new ProdukTokped[products.length];
+            int index = 0;
+
+            for (ProdukTokped product : products) {
+                if (product.equals(dapetProduk)) {
+                    searchResults[0] = dapetProduk;
+                } else {
+                    searchResults[++index] = product;
+                }
+            }
+
+            produk searchResultTokopedia = new produk(searchResults);
+
+            System.out.println("\nData hasil pencarian:");
+            searchResultTokopedia.tampil();
+
+          
+            searchResultTokopedia.urutkan();
+            searchResultTokopedia.tampil();
+        } else {
+            System.out.println("Product not found.");
+            System.out.println("\nData produk:");
+            produkTokped.tampil();
+        }
+        System.out.print("Apakah Anda ingin mencari barang lagi? (ya/tidak): ");
+        String continueSearch = sn.nextLine();
+
+        if (!continueSearch.equalsIgnoreCase("ya")) {
+            lanjutkan = false;
+        }
+
+        System.out.println();
+    }
+
+}
